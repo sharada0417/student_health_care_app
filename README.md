@@ -116,6 +116,23 @@ Once the project is set up, you can run the app to explore its features:
 
 
 
+## Project Structure
+
+```
+.
+├── Components
+|       |---------- BMI.js
+|       |---------- Health.js
+├       |----------Home.js
+│       |----------Profile.js
+|       |----------ProfileTap.js
+!       |----------StudentDb.js
+|
+|--- assets(all images in this file)
+
+
+
+```
 
  
 ## Contributing
