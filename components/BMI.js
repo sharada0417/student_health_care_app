@@ -1,7 +1,40 @@
 import { Image, ScrollView, StyleSheet, View } from "react-native";
 import { Card, Divider, PaperProvider, Text } from "react-native-paper";
-export default function Profile({ route }) {
-    const { student } = route.params;
+import { healthTracks } from "./StudentsDb";
+export default function BMI({ route }) {
+    const { sid, sname } = route.params;
+    const healthRecord = healthTracks.filter((healthTrack) => { return healthTrack.student_id == sid })[0];
+    const height = healthRecord.height/100
+    const BMI = healthRecord.weight / (height * height);
+    let BMIrange='';
+    let BMIimage=''
+    const BMIfun = (BMI)=>{
+        if (BMI <= 18.5) {
+            BMIrange='Underweight';
+            BMIimage= <Image source={require('../assets/bmipic/bmi1.jpg')} style={styles.profilePic} />
+        } else if(BMI <= 24.9){
+            BMIrange='Normal';
+            BMIimage= <Image source={require('../assets/bmipic/bmi6.jpg')} style={styles.profilePic} />
+        }
+        else if(BMI <= 29.9){
+            BMIrange='Overweight';
+            BMIimage= <Image source={require('../assets/bmipic/bmi2.jpg')} style={styles.profilePic} />
+        }
+        else if(BMI <= 34.9){
+            BMIrange='Obesity Class 1';
+            BMIimage= <Image source={require('../assets/bmipic/bmi3.jpg')} style={styles.profilePic} />
+        }
+        else if(BMI <= 39.9){
+            BMIrange='Obesity Class 2';
+            BMIimage= <Image source={require('../assets/bmipic/bmi4.jpg')} style={styles.profilePic} />
+        }
+        else {
+            BMIrange='Obesity Class 3';
+            BMIimage= <Image source={require('../assets/bmipic/bmi5.jpg')} style={styles.profilePic} />
+        }
+    }
+    BMIfun(BMI);
+    //console.log(healthRecord)
     return (
         <PaperProvider>
             <ScrollView contentContainerStyle={styles.scrollView}>
@@ -12,34 +45,16 @@ export default function Profile({ route }) {
                     </View>
                     <View style={styles.body}>
                         <Card style={styles.card}>
-                            {/* Profile Picture */}
-                            <View style={styles.profilePicContainer}>
-                                <Image source={student.profile_pic} style={styles.profilePic} />
-                            </View>
-                            {/* Basic Details */}
                             <Text style={styles.name} variant="headlineMedium">
-                                {student.name}
+                                {sname}'s BMI
                             </Text>
                             <Text style={styles.info} variant="bodyMedium">
-                                Age: {student.age} | Gender: {student.gender}
+                               BMI: {BMI.toFixed(2)}| BMI Range: {BMIrange}
                             </Text>
                             <Divider style={styles.divider} />
-                            {/* Contact Information */}
-                            <View style={styles.section}>
-                                <Text style={styles.sectionTitle}>Contact Information</Text>
-                                <Text>Email: {student.email}</Text>
-                                <Text>Phone: {student.phone}</Text>
-                                <Text>Address: {student.address}</Text>
+                            <View style={styles.profilePicContainer}>
+                                {BMIimage}
                             </View>
-                            <Divider style={styles.divider} />
-                            {/* Academic Information */}
-                            <View style={styles.section}>
-                                <Text style={styles.sectionTitle}>Biological Information</Text>
-                                <Text>Gender: {student.gender}</Text>
-                                <Text>Age: {student.age}</Text>
-                                <Text>Blood Group: {student.blood_group}</Text>
-                            </View>
-                            <Divider style={styles.divider} />
                         </Card>
                     </View>
                     <View style={styles.footer}>
@@ -90,7 +105,7 @@ const styles = StyleSheet.create({
         width: "100%",
         alignItems: 'center',
         backgroundColor: '#4b0150',
-        padding:15
+        padding:10
     },
     input: {
         padding: 8,
@@ -104,16 +119,16 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         padding: 16,
         backgroundColor: '#fff',
-        width:'90%'
+        width: '90%'
     },
     profilePicContainer: {
         marginBottom: 16,
-        alignItems:"center"
+        alignItems: "center"
     },
     profilePic: {
-        width: 160,
-        height: 160,
-        borderRadius: 60,
+        width: 130,
+        height: 390,
+        borderRadius: 5,
     },
     name: {
         fontWeight: 'bold',
@@ -136,5 +151,13 @@ const styles = StyleSheet.create({
     sectionTitle: {
         fontWeight: 'bold',
         marginBottom: 8,
+        textAlign: 'center',
+    },
+    item: {
+        padding: 10,
+        fontSize: 18,
+        height: 44,
     },
 });
+
+
