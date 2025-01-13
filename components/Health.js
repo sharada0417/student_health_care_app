@@ -1,48 +1,53 @@
-import { StyleSheet,View, Text, ScrollView ,Image} from 'react-native'
-import React from 'react'
-import { PaperProvider , Divider, Card} from 'react-native-paper'
-
-const Health = () => {
-  return (
-    <PaperProvider>
-        <ScrollView contentContainerStyle={styles.scrollView}>
-            <View style={styles.container}>
-                <View style={styles.imagepad}>
-                    <Image source={require('../assets/uovlogo.png')} style={styles.image}/>
-                    <Divider/>
+import { Image, ScrollView, StyleSheet, View } from "react-native";
+import { Card, Divider, PaperProvider, Text } from "react-native-paper";
+import { healthTracks } from "./StudentsDb";
+export default function Health({route}){
+    const { sid,sname } = route.params;
+    const healthRecord = healthTracks.filter((healthTrack)=>{return healthTrack.student_id == sid})[0];
+    //console.log(healthRecord)
+    return (
+        <PaperProvider>
+            <ScrollView contentContainerStyle={styles.scrollView}>
+                <View style={styles.container}>
+                    <View style={styles.imagepad}>
+                        <Image source={require('../assets/uovlogo.png')} style={styles.image} />
+                        <Divider />
+                    </View>
+                    <View style={styles.body}>
+                        <Card style={styles.card}>
+                            <Text style={styles.name} variant="headlineMedium">
+                                {sname}
+                            </Text>
+                            <Text style={styles.info} variant="bodyMedium">
+                                Last Checkup Date: {healthRecord.last_checkup}
+                            </Text>
+                            <Divider style={styles.divider} />
+                            <View style={styles.section}>
+                                <Text style={styles.sectionTitle}>Health Records</Text>
+                                <Text>Height: {healthRecord.height} CM</Text>
+                                <Text>Weight: {healthRecord.weight} Kg</Text>
+                                <Text>Heart rate: {healthRecord.heart_rate}</Text>
+                                <Text>Blood Pressure: {healthRecord.blood_pressure}</Text>
+                                <Text>Exercise Frequency: {healthRecord.exercise_frequency}</Text>
+                                <Text>Dietary Preference: {healthRecord.dietary_preference}</Text>
+                                <Text>Medical Conditions: {
+                                    healthRecord.medical_conditions.map((m)=>(
+                                        <Text style={{fontWeight:"bold"}} key={m} >{m}</Text>
+                                    ))
+                                    }
+                                    </Text>
+                            </View>
+                            <Divider style={styles.divider} />
+                        </Card>
+                    </View>
+                    <View style={styles.footer}>
+                        <Text style={{ color: "#ffff", margin: 'auto' }} variant="labelLarge">UoV © 2024</Text>
+                    </View>
                 </View>
-                <View style={styles.body}>
-                    <Card style={styles.card}>
-                        <Text style={styles.name} varient="bodyMedium">
-                            Last checkup Date :
-                        </Text>
-                        <Divider style={styles.divider}/>
-                        <View style={styles.section}>
-                            <Text style={styles.sectionTitle}>Health Records</Text>
-                            <Text>Height: CM</Text>
-                            <Text>Weight: Kg</Text>
-                            <Text>Heart rate:</Text>
-                            <Text>Blood Pressure:</Text>
-                            <Text>Exercise Frequency:</Text>
-                            <Text>Dietary Preference:</Text>
-                            <Text>Medical Conition:</Text>
-                        </View>
-                        <Divider style={styles.divider}/>
-                    </Card>
-                </View>
-                <View style={styles.footer}>
-                    <Text style={{ color:"#ffff" , margin: 'auto'}} varient="labelLarge">
-                        UOV @ 2024
-                    </Text>
-                </View>
-            </View>
-        </ScrollView>
-    </PaperProvider>
-  )
+            </ScrollView>
+        </PaperProvider>
+    );
 }
-
-export default Health
-
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'column',
