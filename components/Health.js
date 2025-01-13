@@ -1,12 +1,132 @@
-import { View, Text } from 'react-native'
+import { StyleSheet,View, Text, ScrollView ,Image} from 'react-native'
 import React from 'react'
+import { PaperProvider , Divider, Card} from 'react-native-paper'
 
 const Health = () => {
   return (
-    <View>
-      <Text>Health</Text>
-    </View>
+    <PaperProvider>
+        <ScrollView contentContainerStyle={styles.scrollView}>
+            <View style={styles.container}>
+                <View style={styles.imagepad}>
+                    <Image source={require('../assets/uovlogo.png')} style={styles.image}/>
+                    <Divider/>
+                </View>
+                <View style={styles.body}>
+                    <Card style={styles.card}>
+                        <Text style={styles.name} varient="bodyMedium">
+                            Last checkup Date :
+                        </Text>
+                        <Divider style={styles.divider}/>
+                        <View style={styles.section}>
+                            <Text style={styles.sectionTitle}>Health Records</Text>
+                            <Text>Height: CM</Text>
+                            <Text>Weight: Kg</Text>
+                            <Text>Heart rate:</Text>
+                            <Text>Blood Pressure:</Text>
+                            <Text>Exercise Frequency:</Text>
+                            <Text>Dietary Preference:</Text>
+                            <Text>Medical Conition:</Text>
+                        </View>
+                        <Divider style={styles.divider}/>
+                    </Card>
+                </View>
+                <View style={styles.footer}>
+                    <Text style={{ color:"#ffff" , margin: 'auto'}} varient="labelLarge">
+                        UOV @ 2024
+                    </Text>
+                </View>
+            </View>
+        </ScrollView>
+    </PaperProvider>
   )
 }
 
 export default Health
+
+const styles = StyleSheet.create({
+    container: {
+        flexDirection: 'column',
+        backgroundColor: '#fff',
+        flexGrow: 1,
+        justifyContent: 'space-between',
+        padding: 10
+    },
+    imagepad: {
+        padding: 8,
+        alignItems: 'center',
+        flex: 2,
+        marginBottom: 10
+    },
+    image: {
+        width: '80%',
+        height: 73,
+    },
+    profile: {
+        width: 200,
+        height: 200,
+
+    },
+    header: {
+        flex: 3,
+        width: "100%",
+        alignItems: 'center',
+        padding: 5,
+        marginBottom: 2
+    },
+    body: {
+        flex: 5,
+        width: "100%",
+        alignItems: "center"
+    },
+    footer: {
+        flex: 2,
+        width: "100%",
+        alignItems: 'center',
+        backgroundColor: '#4b0150'
+    },
+    input: {
+        padding: 8,
+        marginBottom: 7
+    },
+    scrollView: {
+        flexGrow: 1, // Ensures the ScrollView behaves correctly
+    },
+    card: {
+        margin: 8,
+        borderRadius: 8,
+        padding: 16,
+        backgroundColor: '#fff',
+        width:'90%'
+    },
+    profilePicContainer: {
+        marginBottom: 16,
+        alignItems:"center"
+    },
+    profilePic: {
+        width: 160,
+        height: 160,
+        borderRadius: 60,
+    },
+    name: {
+        fontWeight: 'bold',
+        textAlign: 'center',
+        marginBottom: 8,
+    },
+    info: {
+        textAlign: 'center',
+        marginBottom: 16,
+    },
+    divider: {
+        marginVertical: 16,
+        width: '90%',
+    },
+    section: {
+        alignItems: 'flex-start',
+        marginBottom: 8,
+        width: '100%',
+    },
+    sectionTitle: {
+        fontWeight: 'bold',
+        marginBottom: 8,
+    },
+});
