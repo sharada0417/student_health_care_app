@@ -1,42 +1,87 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, KeyboardAvoidingView, Platform , Image } from 'react-native';
-import { Button, Divider, Provider as PaperProvider, TextInput } from 'react-native-paper'; 
-
+import { Button, Chip, Divider, Provider as PaperProvider, TextInput } from 'react-native-paper'; 
+import { students } from './StudentsDb';
+import { useNavigation } from '@react-navigation/native';
 
 const Home = () => {
-  return (
-    <PaperProvider>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
-        style={styles.keyboardAvoidingView}
-      >
-        <ScrollView contentContainerStyle={styles.scrollView}>
-          <View style={styles.container}>
-            <View style={styles.imagepad}>
-                <Image source={require('../assets/uovlogo.png')} style={styles.image}/>
-                <Divider/>
-          </View>
-         <View style={styles.header}>
-            <Text varient="headLineLarge" style={{textTransform:"uppercase"}}>Student Login</Text>
-            <Divider/>
-         </View>
-         <View style={styles.input}>
-            <TextInput label="username" mode='outlined'/>
-         </View>
-          </View>
-          <View style={styles.input}>
-            <TextInput label="Password" mode='outlined' right={<TextInput.Icon icon="eye"/>}/>
-          </View>
-          <View style={styles.input}>
-            <Button buttonColor='#4b0150' mode='contained'>Login</Button>
-          </View>
-          <View style={styles.footer}>
-            <Text style={{ color:"#ffff", margin:'auto'}} varient="labelLarge">UOV @ 2024</Text>
-          </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
-    </PaperProvider>
-  );
+    const navigation = useNavigation();
+    const [username ,setName] = useState();
+    const [pwd,setPwd] = useState();
+    const [msg,setMsg] = useState("");
+
+    const validate = () =>{
+        const result = students.filter((student) => { 
+            return student.username === username && student.password === pwd;
+        });
+        if(result.length == 1) {
+            setMsg("");
+            navigation.navigate('profiletap', { student: result[0] });
+        } else {
+            setMsg("error");
+        }
+    };
+
+    const showError= () => {
+        if(msg == "error") {
+            return <Chip icon="alert-decagram">Please check your username and password</Chip>;
+        }
+        return <></>;
+    };
+
+    const [showPassword , setShowPassword] = useState(false);
+    const toggleShowPassword = (e) => {
+        setShowPassword(!showPassword);
+    };
+    
+    return (
+        <PaperProvider>
+            <KeyboardAvoidingView
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
+                style={styles.keyboardAvoidingView}
+            >
+                <ScrollView contentContainerStyle={styles.scrollView}>
+                    <View style={styles.container}>
+                        <View style={styles.imagepad}>
+                            <Image source={require('../assets/uovlogo.png')} style={styles.image}/>
+                            <Divider/>
+                        </View>
+                        <View style={styles.header}>
+                            <Text varient="headLineLarge" style={{textTransform:"uppercase"}}>Student Login</Text>
+                            <Divider/>
+                        </View>
+                        <View style={styles.input}>
+                            <TextInput 
+                                label="username" 
+                                mode="outlined" 
+                                value={username} 
+                                onChangeText={setName} 
+                            />
+                        </View>
+                    </View>
+                    <View style={styles.input}>
+                        <TextInput 
+                            label="Password" 
+                            mode="outlined" 
+                            value={pwd} 
+                            onChangeText={setPwd} 
+                            secureTextEntry={!showPassword} 
+                            right={<TextInput.Icon icon="eye" onPress={toggleShowPassword} />} 
+                        />
+                    </View>
+                    <View style={styles.input}>
+                        <Button buttonColor='#4b0150' mode='contained' onPress={validate}>Login</Button>
+                    </View>
+                    <View>
+                        { showError() }
+                    </View>
+                    <View style={styles.footer}>
+                        <Text style={{ color:"#ffff", margin:'auto'}} varient="labelLarge">UOV @ 2024</Text>
+                    </View>
+                </ScrollView>
+            </KeyboardAvoidingView>
+        </PaperProvider>
+    );
 };
 
 export default Home;
